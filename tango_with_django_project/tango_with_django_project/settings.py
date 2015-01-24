@@ -10,7 +10,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname((__file__)))
+
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
+
+#print BASE_DIR
+#print TEMPLATE_PATH
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +45,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rango',
 )
+
+TEMPLATE_DIRS = [
+    #'C:/Users/degio_000/code/tangowithdjango/tango_with_django_project/tango_with_django_project\
+    #tango_with_django_project/'
+    #Always use forward slashes and don't forget to use absolute paths, not relative paths
+    TEMPLATE_PATH,
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,3 +96,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    STATIC_PATH,
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Absolute path to the media directory.
