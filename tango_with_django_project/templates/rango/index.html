@@ -7,11 +7,12 @@
         {% else %}
         <h1>Rango says...hello world!</h1>
         {% endif %}
+        <p> visits: {{ visits }}</p>
         {% if categories %}
             <ol>
-                 <h3>Top 5 Categories:</h3>
-                 {% for category in categories %}
-                 <li>{{ category.name }}</li>
+                 <h3>Top 5 Pages:</h3>
+                 {% for page in pages %}
+                 <li><a href="{{ page.url }}">{{ page.title }}</a></li>
                  {% endfor %}
             </ol>
             <ul>

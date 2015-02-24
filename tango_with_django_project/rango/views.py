@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from datetime import datetime
 
 @login_required
 def restricted(request):
@@ -62,6 +63,9 @@ def user_login(request):
         return render(request, 'rango/login.html/', {})
 
 def register(request):
+    # if request.session.test_cookie_worked():
+    #     print ">>>> TEST COOKIE WORKED!"
+    #     request.session.delete_test_cookie()
 
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
@@ -171,21 +175,60 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 def index(request):
+    # request.session.set_test_cookie()
 
     # Query the database for a list of ALL categories currently stored.
-    # Order the categories by no. of likes in descending order.
+    # Order the pages by no. of likes in descending order.
     # Retrieve the top 5 only - or all if less than 5.
     # Place the list in our context_dict dictionary which will be passed to the template engine.
-    category_list = Category.objects.order_by('-likes')[:5]
-    context_dict = {'categories': category_list}
+    category_list = Category.objects.all()
+    page_list = Page.objects.order_by('-views')[:5]
+    context_dict = {'categories': category_list, 'pages': page_list}
 
-    # Render the response and send it back!
-    return render(request, 'rango/index.html', context_dict)
+    # Get the number of visits to the site.
+    # We use the COOKIES.get() function to obtain the visits cookie.
+    # If the cookie exists, the value returned is casted to an integer.
+    # If the cookie doesn't exist, we default to zero and cast that.
+    visits = request.session.get('visits')
+    if not visits:
+        visits = 1
+    reset_last_visit_time = False
+
+    last_visit = request.session.get('last_visit')
+    if last_visit:
+        last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+        if (datetime.now() - last_visit_time).seconds > 0:
+            # ...reassign the value of the cookie to +1 of what it was before...
+            visits = visits + 1
+            # ...and update the last visit cookie, too.
+            reset_last_visit_time = True
+    else:
+        # Cookie last_visit doesn't exist, so create it to the current date/time
+        reset_last_visit_time = True
+
+    if reset_last_visit_time:
+        request.session['last_visit'] = str(datetime.now())
+        request.session['visits'] = visits
+    context_dict['visits'] = visits
+
+    response = render(request, 'rango/index.html', context_dict)
+
+    # Return response back to the user, updating any cookies that need changed.
+    return response
 
 def about(request):
-    context_dict = { 'boldmessage': "This tutorial has been put together by Jake Degiovanni, 2066890"}
+#    context_dict = { 'boldmessage': "This tutorial has been put together by Jake Degiovanni, 2066890"}
 
-    return render(request, 'rango/about.html', context_dict)
+    # If the visits session variable exists, take it and use it.
+    # If it doesn't, we haven't visited the site to set the count to zero.
+    if request.session.get('visits'):
+        count = request.session.get('visits')
+    else:
+        count = 0
+
+    # Remember to include the visit data
+    return render(request, 'rango/about.html', {'visits': count})
 
     #return HttpResponse("Rango says here is the about page. "
     #                    "<p>This tutorial has been put together by Jake Degiovanni, 2066890</p>"
