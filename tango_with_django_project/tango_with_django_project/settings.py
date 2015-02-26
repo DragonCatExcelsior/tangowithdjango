@@ -33,7 +33,12 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = '/rango/login/'
+REGISTRATION_OPEN = True        # If True, users can register
+ACCOUNT_ACTIVATION_DAYS = 1     # One-week activation window
+REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
+LOGIN_REDIRECT_URL = '/rango/'  # The page you want users to arrive at after the successfully log in.
+LOGIN_URL = '/accounts/login/'  # The page users are direct to if they are not logged in,
+                                  # and are trying to access pages that require authentication.
 
 
 # Application definition
@@ -46,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration',
 )
 
 TEMPLATE_DIRS = [
