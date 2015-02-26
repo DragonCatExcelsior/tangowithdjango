@@ -1,28 +1,53 @@
 {% extends 'rango/base.html' %}
 
+{% load staticfiles %}
+
+{% block title %}Index{% endblock %}
+
 {% block body_block %}
    
+    <div class="page-header">
         {% if user.is_authenticated %}
         <h1>Rango says...hello {{ user.username }}!</h1>
         {% else %}
         <h1>Rango says...hello world!</h1>
         {% endif %}
-        <p> visits: {{ visits }}</p>
-        {% if categories %}
-            <ol>
-                 <h3>Top 5 Pages:</h3>
-                 {% for page in pages %}
-                 <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-                 {% endfor %}
-            </ol>
-            <ul>
-                <h3>Categories:</h3>
-                {% for category in categories %}
-                    <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no categories present.</strong>
-        {% endif %}
+    </div>
+    
+    <div class="row placeholders">
+       <div class="panel panel-primary">
+       <div class="panel-heading">
+          <h3 class="panel-title">Categories</h3>
+        
+            {% if categories %}
+                <ul class="list-group">
+                  {% for category in categories %}
+                    <li class="list-group-item"><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
+                  {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no categories present.</strong>
+            {% endif %}
+       </div>
+       </div>
+       <div class="panel panel-primary">
+       <div class="panel-heading">
+          <h3 class="panel-title">Top Pages</h3>
+            {% if pages %}
+                <ul class="list-group">
+                   {% for page in pages %}
+                      <li class ="list-group-item"><a href="{{page.url}}">{{ page.title }}</a></li>
+                   {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no categories present.</strong>
+            {% endif %}
+       </div>
+       </div>
+       
+    </div>
+            
+            
 
+    <p> visits: {{ visits }}</p>
 {% endblock %}

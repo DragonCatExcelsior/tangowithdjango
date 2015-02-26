@@ -9,9 +9,11 @@
 {% endblock %}
 
 {% block body_block %}
-
-   <p>since you're logged in, you can see this text!</P>
-   
-   <img src="{% static "images/seal_of_approval.jpg" %}" width="400" height="300" alt="Have a Seal of Approval." />
-
+    
+   <div class="page-header">
+       <p>since you're logged in, you can see this text!</P>
+   </div
+   <div>
+       <img src="{% static "images/seal_of_approval.jpg" %}" width="400" height="300" alt="Have a Seal of Approval." />
+   </div>
 {% endblock %}
