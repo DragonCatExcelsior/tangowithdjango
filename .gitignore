@@ -45,6 +45,7 @@ coverage.xml
 *.pot
 
 # Django stuff:
+keys.py
 *.log
 
 # Sphinx documentation
