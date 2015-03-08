@@ -31,7 +31,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['DragonCatExcelsior.pythonanywhere.com']
+ALLOWED_HOSTS = ['dragoncatexcelsior.pythonanywhere.com']
 
 REGISTRATION_OPEN = True        # If True, users can register
 ACCOUNT_ACTIVATION_DAYS = 1     # One-week activation window
