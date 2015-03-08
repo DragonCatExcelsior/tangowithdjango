@@ -1,0 +1,22 @@
+{% extends "rango/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    {{otherUser.username }}'s Profile
+{% endblock %}
+
+{% block body_block %}
+    <div class="page-header">
+        <h2>{{ otherUser.username }}'s Profile</h1>
+    </div>
+    <div class="col-md-6">
+        <p>Email: {{ otherUser.email }} </p><br />
+        <p>Website: <a href="{{ otherUser.website }}">{{ otherUser.website }}</a></p><br />
+        {% if otherProfile.picture %}
+            <div style="height:204px; width:240px">
+            <img src="{{ otherProfile.picture.url }}" style="max-width:100%;max-height:100%;margin:auto;display:block" />
+            </div>
+        {% endif %}   
+    </div>
+{% endblock %}

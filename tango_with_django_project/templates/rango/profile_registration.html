@@ -1,0 +1,23 @@
+{% extends "rango/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+    Profile Registration
+{% endblock %}
+
+{% block body_block %}
+    
+    {% if registered %}
+        <div>
+            <h1>Thanks for registering!</h1>
+        </div>
+    {% else %}
+        <form role="form" id="user_form" method="post" action="{% url 'add_profile' %}" enctype = "multipart/form-data">
+            <h2 class="form-signin-heading">Sign Up Here!</h2>
+            {% csrf_token %}
+            {{ profileForm.as_p }}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    {% endif %}
+{% endblock %}

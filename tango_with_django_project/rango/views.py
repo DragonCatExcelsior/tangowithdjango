@@ -5,6 +5,8 @@ from rango.models import Page
 from rango.forms import CategoryForm
 from rango.forms import PageForm
 from rango.forms import UserForm, UserProfileForm
+from rango.models import UserProfile
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -28,6 +30,106 @@ def track_url(request):
                 pass
 
     return redirect(url)
+
+def register_profile(request):
+    registered = False
+
+    # A HTTP POST?
+    if request.method == 'POST':
+        profileForm = UserProfileForm(data = request.POST)
+
+        if profileForm.is_valid():
+            userProfile = profileForm.save(commit = False)
+            userProfile.user = request.user
+
+            if 'picture' in request.FILES:
+                userProfile.picture = request.FILES['picture']
+
+            userProfile.save()
+            registered = True
+
+        else:
+            print profileForm.errors
+
+    else:
+        profileForm = UserProfileForm()
+
+    return render(request, "rango/profile_registration.html/", {'profile_form': profileForm,'registered': registered})
+
+def profile(request):
+    user = request.user
+    context_dict = {}
+    context_dict['user'] = user
+
+    try:
+        own_profile = UserProfile.objects.get(user=user)
+        context_dict['own_profile'] = own_profile
+
+    except:
+        pass
+
+    return render(request, 'rango/profile.html', context_dict)
+
+@login_required
+def edit_profile(request):
+    registered = False
+
+    if request.method == "POST":
+
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            profileForm = UserProfileForm(request.POST, instance = profile)
+        except:
+            profileForm = UserProfileForm(request.POST)
+
+        if profileForm.is_valid():
+
+            if request.user.is_authenticated():
+                profile = profileForm.save(commit=False)
+                user = request.user
+                profile.user = user
+
+                try:
+                    profile.picture = request.FILES['picture']
+                except:
+                    pass
+
+                profile.save()
+                registered = True
+        else:
+            print profileForm.errors
+
+        return index(request)
+
+    else:
+        profileForm = UserProfileForm(request.GET)
+
+    context_dict = {}
+    context_dict['profile'] = profileForm
+    context_dict['registered'] = registered
+
+    return render(request, 'rango/edit_profile.html', context_dict)
+
+def user_profile(request, user_name):
+     context_dict = {}
+
+     otherUser = User.objects.get(username = user_name)
+     context_dict['otherUser'] = otherUser
+
+     try:
+         otherProfile = UserProfile.objects.get(user = otherUser)
+         context_dict['otherProfile'] = otherProfile
+     except:
+         pass
+
+     return render(request, 'rango/user_profile.html', context_dict)
+
+def users(request):
+
+    users = User.objects.order_by('-email')
+    context_dict = {'users': users}
+
+    return render(request, 'rango/users.html', context_dict)
 
 @login_required
 def restricted(request):
