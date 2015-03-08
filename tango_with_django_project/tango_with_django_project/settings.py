@@ -27,11 +27,11 @@ STATIC_PATH = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'ex7xf*9o5@9-i$9!vu+h72!@(#)$sm=e@dlro(ix58u5o-&f6#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['DragonCatExcelsior.pythonanywhere.com']
 
 REGISTRATION_OPEN = True        # If True, users can register
 ACCOUNT_ACTIVATION_DAYS = 1     # One-week activation window
