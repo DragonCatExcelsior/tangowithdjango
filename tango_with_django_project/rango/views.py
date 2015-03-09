@@ -66,7 +66,8 @@ def profile(request):
         context_dict['own_profile'] = own_profile
 
     except:
-        pass
+        own_profile = None
+        context_dict['own_profile'] = own_profile
 
     return render(request, 'rango/profile.html', context_dict)
 

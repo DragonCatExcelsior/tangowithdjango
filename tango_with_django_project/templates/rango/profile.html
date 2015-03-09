@@ -18,11 +18,18 @@
             <img src="{{ own_profile.picture.url }}" style="max-width:100%;max-height:100%;margin:auto;display:block" />
             </div>
         {% endif %}
+        
+        {% if r %}
+            
+        {% endif %}
         {% if own_profile %}
             <a href="{% url 'edit_profile' %}">Edit Profile</a> 
             <br />
-            <p><a href="{% url 'password_change' %}">Change password</a></p> 
+            <p><a href="/admin/">Change password</a></p> 
+        {% else %}
+             <a href="{%url 'register_profile' %}">Register your profile</a>
         {% endif %}
+        
         
         
     </div>

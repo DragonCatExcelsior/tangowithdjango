@@ -11,9 +11,11 @@
     {% if registered %}
         <div>
             <h1>Thanks for registering!</h1>
+            <br />
+            <a href="{% url 'profile' %}">View your Profile!</a>
         </div>
     {% else %}
-        <form role="form" id="user_form" method="post" action="{% url 'add_profile' %}" enctype = "multipart/form-data">
+        <form role="form" id="user_form" method="post" action="{% url 'register_profile' %}" enctype = "multipart/form-data">
             <h2 class="form-signin-heading">Sign Up Here!</h2>
             {% csrf_token %}
             {{ profileForm.as_p }}
